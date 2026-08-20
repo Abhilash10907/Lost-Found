@@ -12,7 +12,7 @@ import {
   KeyRound,
   Wallet,
   Headphones,
-  IdCard,
+  Contact,
   GlassWater,
   Package,
   Search as SearchIcon,
@@ -23,29 +23,44 @@ import ItemCard from "@/components/ItemCard";
 import MatchCard from "@/components/MatchCard";
 import StatsCard from "@/components/StatsCard";
 import CampusLocations from "@/components/CampusLocations";
-import { mockItems, mockMatches, campusStats, getItemById } from "@/data/mockItems";
+import { getItems, getStats, getMatches } from "@/lib/api";
+import { CampusItem, ItemMatch } from "@/data/types";
+import { useEffect } from "react";
 
 const HERO_STICKERS = [
   { icon: Backpack, color: "bg-sticker-light text-sticker-dark", top: "6%", left: "4%", rotate: -10, delay: 0 },
   { icon: KeyRound, color: "bg-sunshine-light text-ink", top: "62%", left: "2%", rotate: 8, delay: 0.4 },
   { icon: Wallet, color: "bg-marker-light text-marker-dark", top: "2%", left: "80%", rotate: 6, delay: 0.2 },
   { icon: Headphones, color: "bg-pop-light text-pop-dark", top: "70%", left: "82%", rotate: -8, delay: 0.6 },
-  { icon: IdCard, color: "bg-grape-light text-grape-dark", top: "36%", left: "88%", rotate: 4, delay: 0.3 },
+  { icon: Contact, color: "bg-grape-light text-grape-dark", top: "36%", left: "88%", rotate: 4, delay: 0.3 },
   { icon: GlassWater, color: "bg-sticker-light text-sticker-dark", top: "40%", left: "0%", rotate: -6, delay: 0.5 },
 ];
 
 export default function HomePage() {
   const [query, setQuery] = useState("");
+  const [recentItems, setRecentItems] = useState<CampusItem[]>([]);
+  const [stats, setStats] = useState({ reported: 143, found: 96, returned: 73, matches: 51 });
+  const [matches, setMatches] = useState<ItemMatch[]>([]);
+  const [allItems, setAllItems] = useState<CampusItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    Promise.all([getItems(), getStats(), getMatches()])
+      .then(([items, statsData, matchesData]) => {
+        setAllItems(items);
+        setRecentItems(items.filter((item) => item.status !== "returned").slice(0, 8));
+        setStats(statsData);
+        setMatches(matchesData.slice(0, 3));
+      })
+      .catch((err) => console.error("Failed to fetch homepage data:", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   function handleSearch(value: string) {
     const params = value.trim() ? `?q=${encodeURIComponent(value.trim())}` : "";
     router.push(`/lost${params}`);
   }
-
-  const recentItems = mockItems
-    .filter((item) => item.status !== "returned")
-    .slice(0, 8);
 
   return (
     <div>
@@ -167,9 +182,27 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {recentItems.map((item, i) => (
-            <ItemCard key={item.id} item={item} rotate={i % 2 === 0 ? -1 : 1} />
-          ))}
+          {loading ? (
+            [...Array(4)].map((_, i) => (
+              <div 
+                key={i} 
+                className="comic-card animate-pulse overflow-hidden rounded-2xl border-[2.5px] border-ink bg-paper opacity-70 p-4 space-y-3"
+                style={{ transform: `rotate(${i % 2 === 0 ? -0.5 : 0.5}deg)` }}
+              >
+                <div className="h-32 w-full bg-ink/5 rounded-md" />
+                <div className="h-5 w-3/4 rounded-md bg-ink/10" />
+                <div className="h-3 w-1/2 rounded-md bg-ink/5" />
+              </div>
+            ))
+          ) : recentItems.length === 0 ? (
+            <div className="col-span-full py-8 text-center text-sm font-medium text-ink-soft">
+              No reported items yet.
+            </div>
+          ) : (
+            recentItems.map((item, i) => (
+              <ItemCard key={item.id} item={item} rotate={i % 2 === 0 ? -1 : 1} />
+            ))
+          )}
         </div>
       </section>
 
@@ -188,19 +221,45 @@ export default function HomePage() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {mockMatches.map((match) => {
-            const source = getItemById(match.sourceItemId);
-            const matched = getItemById(match.matchedItemId);
-            if (!source || !matched) return null;
-            return (
-              <MatchCard
-                key={match.id}
-                match={match}
-                sourceItem={source}
-                matchedItem={matched}
-              />
-            );
-          })}
+          {loading ? (
+            [...Array(3)].map((_, i) => (
+              <div 
+                key={i} 
+                className="comic-card animate-pulse overflow-hidden rounded-2xl border-[2.5px] border-ink bg-paper opacity-70 p-5 space-y-3"
+              >
+                <div className="h-4 w-1/4 rounded bg-ink/10" />
+                <div className="flex gap-3">
+                  <div className="h-16 w-16 bg-ink/5 rounded-xl" />
+                  <div className="flex-1 space-y-2 py-1">
+                    <div className="h-4 w-3/4 rounded bg-ink/10" />
+                    <div className="h-3 w-5/6 rounded bg-ink/5" />
+                  </div>
+                </div>
+                <div className="space-y-1.5 pt-2">
+                  <div className="h-2 w-full bg-ink/5 rounded" />
+                  <div className="h-2 w-5/6 bg-ink/5 rounded" />
+                </div>
+              </div>
+            ))
+          ) : matches.length === 0 ? (
+            <div className="col-span-full py-8 text-center text-sm font-medium text-ink-soft">
+              No matching activity on campus yet.
+            </div>
+          ) : (
+            matches.map((match) => {
+              const source = allItems.find((i) => i.id === match.sourceItemId);
+              const matched = allItems.find((i) => i.id === match.matchedItemId);
+              if (!source || !matched) return null;
+              return (
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  sourceItem={source}
+                  matchedItem={matched}
+                />
+              );
+            })
+          )}
         </div>
       </section>
 
@@ -228,10 +287,10 @@ export default function HomePage() {
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <StatsCard icon={Package} value={campusStats.reported} label="Stuff Reported" accent="sticker" rotate={-1} />
-          <StatsCard icon={SearchIcon} value={campusStats.found} label="Stuff Found" accent="pop" rotate={1} />
-          <StatsCard icon={ThumbsUp} value={campusStats.returned} label="Back With Owners" accent="sunshine" rotate={-1} />
-          <StatsCard icon={Compass} value={campusStats.matches} label="Matches" accent="grape" rotate={1} />
+          <StatsCard icon={Package} value={stats.reported} label="Stuff Reported" accent="sticker" rotate={-1} />
+          <StatsCard icon={SearchIcon} value={stats.found} label="Stuff Found" accent="pop" rotate={1} />
+          <StatsCard icon={ThumbsUp} value={stats.returned} label="Back With Owners" accent="sunshine" rotate={-1} />
+          <StatsCard icon={Compass} value={stats.matches} label="Matches" accent="grape" rotate={1} />
         </div>
       </section>
     </div>

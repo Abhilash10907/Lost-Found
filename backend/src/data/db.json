@@ -1,0 +1,327 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "name": "Black Leather Wallet",
+      "category": "Wallets",
+      "type": "found",
+      "description": "Found near the checkout counter. Has a few cards inside and some loose change. Corners are a little worn.",
+      "image": "https://picsum.photos/seed/wallet-black/600/450",
+      "location": "Cafeteria",
+      "date": "2026-08-19",
+      "time": "1:15 PM",
+      "color": "Black",
+      "brand": "Fossil",
+      "additionalDetails": "Small scratch on the front flap, embossed initials 'R.K.'",
+      "keepingLocation": "Cafeteria front desk",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "name": "AirPods Pro Case",
+      "category": "Electronics",
+      "type": "found",
+      "description": "White charging case only, no earbuds inside. Was sitting on a reading table for a while before someone turned it in.",
+      "image": "https://picsum.photos/seed/airpods-case/600/450",
+      "location": "Main Library",
+      "date": "2026-08-18",
+      "time": "4:40 PM",
+      "color": "White",
+      "brand": "Apple",
+      "additionalDetails": "Small dent on one corner, no engraving.",
+      "keepingLocation": "Library help desk, 2nd floor",
+      "status": "active"
+    },
+    {
+      "id": "3",
+      "name": "Blue Backpack",
+      "category": "Bags",
+      "type": "lost",
+      "description": "Navy blue backpack with a laptop sleeve and a keychain of a small robot hanging from the front zipper.",
+      "image": "https://picsum.photos/seed/backpack-blue/600/450",
+      "location": "Computer Science Block",
+      "date": "2026-08-19",
+      "time": "11:00 AM",
+      "color": "Navy Blue",
+      "brand": "Wildcraft",
+      "additionalDetails": "Contains a charger and a marked-up notebook. Zipper pull is broken on the small pocket.",
+      "status": "active"
+    },
+    {
+      "id": "4",
+      "name": "Student ID Card",
+      "category": "ID Cards",
+      "type": "found",
+      "description": "Found tucked between vending machine and the wall. Card looks recently issued, still has that glossy shine.",
+      "image": "https://picsum.photos/seed/id-card/600/450",
+      "location": "Student Center",
+      "date": "2026-08-17",
+      "time": "9:20 AM",
+      "additionalDetails": "Name partially visible, batch year printed as 2027.",
+      "keepingLocation": "Student Center reception",
+      "status": "active"
+    },
+    {
+      "id": "5",
+      "name": "Scientific Calculator",
+      "category": "Electronics",
+      "type": "lost",
+      "description": "Left behind after an evening class. Has a cracked screen protector and a rubber cover that's peeling at one edge.",
+      "image": "https://picsum.photos/seed/calculator/600/450",
+      "location": "Computer Science Block",
+      "date": "2026-08-16",
+      "time": "6:30 PM",
+      "color": "Black",
+      "brand": "Casio",
+      "additionalDetails": "Sticker with initials 'S.M.' on the back.",
+      "status": "active"
+    },
+    {
+      "id": "6",
+      "name": "Steel Water Bottle",
+      "category": "Other",
+      "type": "found",
+      "description": "Insulated steel bottle left on the bleachers after practice. Still had cold water inside when it was picked up.",
+      "image": "https://picsum.photos/seed/water-bottle/600/450",
+      "location": "Sports Complex",
+      "date": "2026-08-18",
+      "time": "5:50 PM",
+      "color": "Matte Green",
+      "brand": "Milton",
+      "additionalDetails": "Dent on the base, stickers of a mountain trail brand.",
+      "keepingLocation": "Sports Complex front office",
+      "status": "active"
+    },
+    {
+      "id": "7",
+      "name": "Hostel Room Keys",
+      "category": "Keys",
+      "type": "lost",
+      "description": "Set of three keys on a red carabiner clip, including a room key and what looks like a cupboard key.",
+      "image": "https://picsum.photos/seed/keys-red/600/450",
+      "location": "Hostel Block A",
+      "date": "2026-08-19",
+      "time": "8:05 AM",
+      "color": "Red carabiner",
+      "additionalDetails": "One key has a chipped plastic head.",
+      "status": "active"
+    },
+    {
+      "id": "8",
+      "name": "USB-C Charger Brick",
+      "category": "Electronics",
+      "type": "found",
+      "description": "30W charger left plugged into an outlet near the back row of seats. No cable attached.",
+      "image": "https://picsum.photos/seed/usb-charger/600/450",
+      "location": "Auditorium",
+      "date": "2026-08-15",
+      "time": "3:00 PM",
+      "color": "White",
+      "brand": "Anker",
+      "keepingLocation": "Auditorium ushers' desk",
+      "status": "active"
+    },
+    {
+      "id": "9",
+      "name": "Spiral Notebook",
+      "category": "Books",
+      "type": "lost",
+      "description": "Green spiral notebook full of handwritten chemistry notes, probably from this semester's lab sessions.",
+      "image": "https://picsum.photos/seed/notebook-green/600/450",
+      "location": "Main Library",
+      "date": "2026-08-14",
+      "time": "2:10 PM",
+      "color": "Green",
+      "additionalDetails": "Cover has a doodled sun on the front.",
+      "status": "active"
+    },
+    {
+      "id": "10",
+      "name": "Wired Earphones",
+      "category": "Electronics",
+      "type": "found",
+      "description": "Tangled pair of wired earphones found under a bench, one ear tip missing.",
+      "image": "https://picsum.photos/seed/earphones/600/450",
+      "location": "Parking Area",
+      "date": "2026-08-17",
+      "time": "7:45 AM",
+      "color": "Black and Red",
+      "brand": "boAt",
+      "keepingLocation": "Security cabin, Parking Area",
+      "status": "active"
+    },
+    {
+      "id": "11",
+      "name": "Denim Jacket",
+      "category": "Clothing",
+      "type": "lost",
+      "description": "Light-wash denim jacket, size M, left hanging over a chair after a group project session.",
+      "image": "https://picsum.photos/seed/denim-jacket/600/450",
+      "location": "Student Center",
+      "date": "2026-08-13",
+      "time": "5:00 PM",
+      "color": "Light blue",
+      "additionalDetails": "Small enamel pin on the left collar.",
+      "status": "active"
+    },
+    {
+      "id": "12",
+      "name": "Prescription Glasses",
+      "category": "Accessories",
+      "type": "found",
+      "description": "Found folded on top of a printer. Thin gold frames with clear lenses, kept in a soft case nearby.",
+      "image": "https://picsum.photos/seed/glasses/600/450",
+      "location": "Main Library",
+      "date": "2026-08-19",
+      "time": "10:30 AM",
+      "color": "Gold",
+      "keepingLocation": "Library help desk, ground floor",
+      "status": "active"
+    },
+    {
+      "id": "13",
+      "name": "Semester Fee Receipt Folder",
+      "category": "Documents",
+      "type": "lost",
+      "description": "Clear plastic folder with fee receipts and a photocopy of an admission letter inside.",
+      "image": "https://picsum.photos/seed/documents-folder/600/450",
+      "location": "Main Gate",
+      "date": "2026-08-12",
+      "time": "12:15 PM",
+      "additionalDetails": "Folder has a small tear on the top edge.",
+      "status": "active"
+    },
+    {
+      "id": "14",
+      "name": "Grey Duffel Bag",
+      "category": "Bags",
+      "type": "found",
+      "description": "Gym duffel bag found near the equipment room, contains a towel and a spare pair of shoes.",
+      "image": "https://picsum.photos/seed/duffel-bag/600/450",
+      "location": "Sports Complex",
+      "date": "2026-08-16",
+      "time": "6:00 PM",
+      "color": "Grey",
+      "brand": "Decathlon",
+      "keepingLocation": "Sports Complex front office",
+      "status": "active"
+    },
+    {
+      "id": "15",
+      "name": "Silver Analog Watch",
+      "category": "Accessories",
+      "type": "returned",
+      "description": "Simple silver-strap analog watch, already claimed by its owner after a quick verification chat.",
+      "image": "https://picsum.photos/seed/watch-silver/600/450",
+      "location": "Hostel Block B",
+      "date": "2026-08-10",
+      "time": "9:00 AM",
+      "color": "Silver",
+      "brand": "Titan",
+      "status": "returned"
+    }
+  ],
+  "matches": [
+    {
+      "id": "m1",
+      "sourceItemId": "3",
+      "matchedItemId": "1",
+      "overallScore": 91,
+      "breakdown": {
+        "description": 95,
+        "location": 90,
+        "date": 100,
+        "category": 100
+      },
+      "blurb": "This looks suspiciously similar to your lost wallet 👀"
+    },
+    {
+      "id": "m2",
+      "sourceItemId": "9",
+      "matchedItemId": "2",
+      "overallScore": 74,
+      "breakdown": {
+        "description": 68,
+        "location": 85,
+        "date": 70,
+        "category": 90
+      },
+      "blurb": "Same building, similar timing — worth a look 👀"
+    },
+    {
+      "id": "m3",
+      "sourceItemId": "7",
+      "matchedItemId": "10",
+      "overallScore": 58,
+      "breakdown": {
+        "description": 40,
+        "location": 65,
+        "date": 60,
+        "category": 70
+      },
+      "blurb": "A stretch, but campus is full of surprises ✨"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "n1",
+      "message": "Possible match found for your wallet.",
+      "icon": "match",
+      "timeAgo": "2h ago",
+      "unread": false
+    },
+    {
+      "id": "n2",
+      "message": "Someone responded to your item.",
+      "icon": "message",
+      "timeAgo": "5h ago",
+      "unread": false
+    },
+    {
+      "id": "n3",
+      "message": "Your report was submitted.",
+      "icon": "success",
+      "timeAgo": "1d ago",
+      "unread": false
+    },
+    {
+      "id": "n4",
+      "message": "A new item was reported near Main Library.",
+      "icon": "info",
+      "timeAgo": "2d ago",
+      "unread": false
+    }
+  ],
+  "activities": [
+    {
+      "id": "a1",
+      "message": "You reported a lost wallet.",
+      "timeAgo": "2h ago",
+      "icon": "lost"
+    },
+    {
+      "id": "a2",
+      "message": "A possible match was found.",
+      "timeAgo": "2h ago",
+      "icon": "match"
+    },
+    {
+      "id": "a3",
+      "message": "You reported finding a water bottle.",
+      "timeAgo": "1d ago",
+      "icon": "found"
+    },
+    {
+      "id": "a4",
+      "message": "Your item was marked as returned.",
+      "timeAgo": "4d ago",
+      "icon": "returned"
+    }
+  ],
+  "stats": {
+    "reported": 143,
+    "found": 96,
+    "returned": 73,
+    "matches": 51
+  }
+}

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bell, Search, MessageCircle, CheckCircle2, Info } from "lucide-react";
-import { mockNotifications } from "@/data/mockItems";
 import { CampusNotification } from "@/data/types";
 import { cn } from "@/lib/utils";
+import { getNotifications, markNotificationsAsRead } from "@/lib/api";
 
 const ICONS: Record<CampusNotification["icon"], typeof Search> = {
   match: Search,
@@ -16,8 +16,34 @@ const ICONS: Record<CampusNotification["icon"], typeof Search> = {
 
 export default function NotificationBell() {
   const [open, setOpen] = useState(false);
+  const [notifications, setNotifications] = useState<CampusNotification[]>([]);
   const ref = useRef<HTMLDivElement>(null);
-  const unreadCount = mockNotifications.filter((n) => n.unread).length;
+
+  const unreadCount = notifications.filter((n) => n.unread).length;
+
+  async function loadNotifications() {
+    try {
+      const data = await getNotifications();
+      setNotifications(data);
+    } catch (err) {
+      console.error("Failed to load notifications:", err);
+    }
+  }
+
+  useEffect(() => {
+    loadNotifications();
+    
+    // Refresh notifications when menu opens
+    if (open) {
+      loadNotifications().then(() => {
+        // Optimistically set all as read locally
+        setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
+      });
+      markNotificationsAsRead().catch((err) =>
+        console.error("Failed to mark notifications read:", err)
+      );
+    }
+  }, [open]);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -61,31 +87,37 @@ export default function NotificationBell() {
               </p>
             </div>
             <ul className="max-h-80 divide-y-2 divide-ink/10 overflow-y-auto">
-              {mockNotifications.map((n) => {
-                const Icon = ICONS[n.icon];
-                return (
-                  <li
-                    key={n.id}
-                    className={cn(
-                      "flex items-start gap-3 px-4 py-3 text-sm",
-                      n.unread && "bg-sticker-light/40"
-                    )}
-                  >
-                    <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-paper comic-border">
-                      <Icon className="h-4 w-4 text-ink" aria-hidden="true" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-ink">{n.message}</p>
-                      <p className="mt-0.5 font-tag text-[10px] uppercase tracking-wide text-ink-soft">
-                        {n.timeAgo}
-                      </p>
-                    </div>
-                    {n.unread && (
-                      <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-marker" />
-                    )}
-                  </li>
-                );
-              })}
+              {notifications.length === 0 ? (
+                <li className="px-4 py-6 text-center text-xs text-ink-soft">
+                  All caught up! No notifications.
+                </li>
+              ) : (
+                notifications.map((n) => {
+                  const Icon = ICONS[n.icon] || Info;
+                  return (
+                    <li
+                      key={n.id}
+                      className={cn(
+                        "flex items-start gap-3 px-4 py-3 text-sm",
+                        n.unread && "bg-sticker-light/40"
+                      )}
+                    >
+                      <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-paper comic-border">
+                        <Icon className="h-4 w-4 text-ink" aria-hidden="true" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-ink text-xs sm:text-sm">{n.message}</p>
+                        <p className="mt-0.5 font-tag text-[9px] sm:text-[10px] uppercase tracking-wide text-ink-soft">
+                          {n.timeAgo}
+                        </p>
+                      </div>
+                      {n.unread && (
+                        <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-marker" />
+                      )}
+                    </li>
+                  );
+                })
+              )}
             </ul>
           </motion.div>
         )}
@@ -93,3 +125,4 @@ export default function NotificationBell() {
     </div>
   );
 }
+

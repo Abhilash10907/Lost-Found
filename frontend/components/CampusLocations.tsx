@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   BookOpen,
   Utensils,
@@ -10,8 +14,8 @@ import {
   Car,
   LucideIcon,
 } from "lucide-react";
-import { CampusLocation } from "@/data/types";
-import { mockItems } from "@/data/mockItems";
+import { CampusLocation, CampusItem } from "@/data/types";
+import { getItems } from "@/lib/api";
 
 const LOCATION_META: {
   name: CampusLocation;
@@ -31,14 +35,22 @@ const LOCATION_META: {
 ];
 
 export default function CampusLocations() {
+  const [items, setItems] = useState<CampusItem[]>([]);
+
+  useEffect(() => {
+    getItems()
+      .then(setItems)
+      .catch((err) => console.error("Failed to load items in locations:", err));
+  }, []);
+
   const counts = LOCATION_META.map((loc) => {
-    const items = mockItems.filter(
+    const locItems = items.filter(
       (item) => item.location === loc.name && item.status === "active"
     );
     return {
       ...loc,
-      lost: items.filter((i) => i.type === "lost").length,
-      found: items.filter((i) => i.type === "found").length,
+      lost: locItems.filter((i) => i.type === "lost").length,
+      found: locItems.filter((i) => i.type === "found").length,
     };
   });
 
@@ -50,10 +62,11 @@ export default function CampusLocations() {
           const Icon = loc.icon;
           const total = loc.lost + loc.found;
           return (
-            <div
+            <Link
               key={loc.name}
+              href={`/lost?location=${encodeURIComponent(loc.name)}`}
               style={{ transform: `rotate(${loc.rotate}deg)` }}
-              className="flex flex-col items-center gap-2 rounded-2xl comic-border bg-paper p-3 text-center shadow-comic-sm transition-transform hover:-translate-y-1 hover:rotate-0"
+              className="flex flex-col items-center gap-2 rounded-2xl comic-border bg-paper p-3 text-center shadow-comic-sm transition-transform hover:-translate-y-1 hover:rotate-0 cursor-pointer"
             >
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sticker-light comic-border">
                 <Icon className="h-5 w-5 text-sticker-dark" aria-hidden="true" />
@@ -78,10 +91,11 @@ export default function CampusLocations() {
                   </span>
                 )}
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
     </div>
   );
 }
+

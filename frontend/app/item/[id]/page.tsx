@@ -2,22 +2,29 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Calendar, Clock, Palette, Tag, ArrowLeft } from "lucide-react";
-import { getItemById, mockItems } from "@/data/mockItems";
+import { getItemById } from "@/lib/api";
 import StatusBadge from "@/components/StatusBadge";
 import ClaimAction from "@/components/ClaimAction";
 import { formatDate } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  return mockItems.map((item) => ({ id: item.id }));
+  return [];
 }
 
-export default function ItemDetailsPage({
+export default async function ItemDetailsPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const item = getItemById(params.id);
-  if (!item) notFound();
+  let item;
+  try {
+    item = await getItemById(params.id);
+  } catch (err) {
+    notFound();
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -124,7 +131,7 @@ export default function ItemDetailsPage({
           </p>
 
           <div className="mt-6">
-            <ClaimAction type={item.type} />
+            <ClaimAction type={item.type} id={item.id} status={item.status} />
           </div>
         </div>
       </div>

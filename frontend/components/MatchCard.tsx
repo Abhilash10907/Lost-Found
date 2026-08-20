@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { CampusItem, ItemMatch } from "@/data/types";
@@ -34,18 +35,23 @@ export default function MatchCard({
       initial={{ opacity: 0, scale: 0.96 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="comic-card relative overflow-hidden rounded-2xl p-4 sm:p-5"
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="relative"
     >
-      <div className="mb-3 flex items-center gap-2">
-        <span className="sticker-badge bg-grape-light text-grape-dark">
-          <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-          {match.overallScore}% MATCH
-        </span>
-        <span className="hidden text-xs font-tag text-ink-soft sm:inline">
-          for &ldquo;{sourceItem.name}&rdquo;
-        </span>
-      </div>
+      <Link
+        href={`/item/${matchedItem.id}`}
+        className="group block comic-card overflow-hidden rounded-2xl p-4 sm:p-5 transition-shadow duration-200 hover:shadow-comic-lg"
+      >
+        <div className="mb-3 flex items-center gap-2">
+          <span className="sticker-badge bg-grape-light text-grape-dark">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            {match.overallScore}% MATCH
+          </span>
+          <span className="hidden text-xs font-tag text-ink-soft sm:inline group-hover:text-ink transition-colors">
+            for &ldquo;{sourceItem.name}&rdquo;
+          </span>
+        </div>
 
       <div className="flex gap-3 sm:gap-4">
         <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl comic-border sm:h-20 sm:w-20">
@@ -87,6 +93,7 @@ export default function MatchCard({
           );
         })}
       </div>
-    </motion.div>
-  );
+    </Link>
+  </motion.div>
+);
 }

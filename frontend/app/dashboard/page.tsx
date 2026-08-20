@@ -3,7 +3,9 @@ import { Backpack, Search, PartyPopper, Frown, HeartHandshake, Sparkles, CheckCi
 import ItemCard from "@/components/ItemCard";
 import MatchCard from "@/components/MatchCard";
 import EmptyState from "@/components/EmptyState";
-import { mockItems, mockMatches, mockActivity, getItemById } from "@/data/mockItems";
+import { getItems, getMatches, getActivities, getStats } from "@/lib/api";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Dashboard \u2014 Campus Find",
@@ -16,14 +18,23 @@ const ACTIVITY_ICONS = {
   returned: CheckCircle2,
 };
 
-export default function DashboardPage() {
-  const myLostItems = mockItems.filter(
+export default async function DashboardPage() {
+  const [items, matches, activities, stats] = await Promise.all([
+    getItems(),
+    getMatches(),
+    getActivities(),
+    getStats(),
+  ]);
+
+  const getItemById = (id: string) => items.find((item) => item.id === id);
+
+  const myLostItems = items.filter(
     (item) => item.type === "lost" && item.status !== "returned"
   ).slice(0, 3);
-  const myFoundItems = mockItems.filter(
+  const myFoundItems = items.filter(
     (item) => item.type === "found" && item.status !== "returned"
   ).slice(0, 3);
-  const returnedCount = mockItems.filter((item) => item.status === "returned").length;
+  const returnedCount = items.filter((item) => item.status === "returned").length;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -48,7 +59,7 @@ export default function DashboardPage() {
         />
         <OverviewCard
           icon={Search}
-          value={mockMatches.length}
+          value={matches.length}
           label="Possible Matches"
           emoji="\u{1F50E}"
           accent="grape"
@@ -91,7 +102,7 @@ export default function DashboardPage() {
       {/* POSSIBLE MATCHES */}
       <DashboardSection title="Possible Matches">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {mockMatches.map((match) => {
+          {matches.slice(0, 3).map((match) => {
             const source = getItemById(match.sourceItemId);
             const matched = getItemById(match.matchedItemId);
             if (!source || !matched) return null;
@@ -106,8 +117,8 @@ export default function DashboardPage() {
       <DashboardSection title="Recent Activity">
         <div className="comic-card rounded-2xl p-2 sm:p-4">
           <ul className="divide-y-2 divide-ink/10">
-            {mockActivity.map((entry) => {
-              const Icon = ACTIVITY_ICONS[entry.icon];
+            {activities.slice(0, 6).map((entry) => {
+              const Icon = ACTIVITY_ICONS[entry.icon as keyof typeof ACTIVITY_ICONS] || Frown;
               return (
                 <li key={entry.id} className="flex items-center gap-3 px-3 py-3">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sunshine-light comic-border">

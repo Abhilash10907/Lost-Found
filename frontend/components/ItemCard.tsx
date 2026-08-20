@@ -17,7 +17,7 @@ export default function ItemCard({
 }) {
   return (
     <motion.div
-      style={{ ["--rot" as string]: `${rotate}deg` }}
+      style={{ rotate: rotate }}
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -28,7 +28,6 @@ export default function ItemCard({
       <Link
         href={`/item/${item.id}`}
         className="group block comic-card overflow-hidden rounded-2xl transition-shadow duration-200 hover:shadow-comic-lg"
-        style={{ transform: `rotate(${rotate}deg)` }}
       >
         {/* punch holes for the claim-ticket look */}
         <span className="absolute left-3 top-[132px] z-10 h-4 w-4 -translate-y-1/2 rounded-full bg-cream comic-border md:top-[152px]" />

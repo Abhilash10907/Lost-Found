@@ -8,9 +8,11 @@ import {
   UploadCloud,
   CheckCircle2,
   ImageOff,
+  Loader2,
 } from "lucide-react";
 import { CATEGORIES, LOCATIONS, cn } from "@/lib/utils";
 import { ItemCategory, CampusLocation, ItemStatus } from "@/data/types";
+import { createItem } from "@/lib/api";
 
 interface FormState {
   name: string;
@@ -50,6 +52,7 @@ export default function ReportForm({
   const [errors, setErrors] = useState<Errors>({});
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -79,31 +82,52 @@ export default function ReportForm({
     return Object.keys(nextErrors).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
 
+    setSubmitting(true);
     try {
-      const existing = JSON.parse(
-        localStorage.getItem("campusfind-reports") || "[]"
-      );
-      const newReport = {
-        id: `local-${Date.now()}`,
+      await createItem({
         type: reportType,
+        name: form.name,
+        category: form.category as ItemCategory,
+        description: form.description,
+        location: form.location as CampusLocation,
+        date: form.date,
+        time: form.time,
+        color: form.color,
+        brand: form.brand,
+        additionalDetails: form.additionalDetails,
+        keepingLocation: form.keepingLocation,
         image: imagePreview,
-        ...form,
-        createdAt: new Date().toISOString(),
-      };
-      localStorage.setItem(
-        "campusfind-reports",
-        JSON.stringify([newReport, ...existing])
-      );
-    } catch {
-      // localStorage may be unavailable (e.g. private mode) — fail silently,
-      // the report simply won't persist across reloads.
-    }
+      });
 
-    setSubmitted(true);
+      try {
+        const existing = JSON.parse(
+          localStorage.getItem("campusfind-reports") || "[]"
+        );
+        const newReport = {
+          id: `local-${Date.now()}`,
+          type: reportType,
+          ...form,
+          createdAt: new Date().toISOString(),
+        };
+        localStorage.setItem(
+          "campusfind-reports",
+          JSON.stringify([newReport, ...existing])
+        );
+      } catch {
+        // localStorage fallback
+      }
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error("Failed to submit report:", error);
+      alert("Failed to submit report. Please check your connection to the backend server and try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function resetForm() {
@@ -432,12 +456,20 @@ export default function ReportForm({
 
         <button
           type="submit"
+          disabled={submitting}
           className={cn(
-            "btn-comic w-full justify-center px-6 py-3.5 text-sm text-paper",
+            "btn-comic w-full justify-center px-6 py-3.5 text-sm text-paper disabled:opacity-70 disabled:cursor-not-allowed",
             reportType === "lost" ? "bg-marker" : "bg-pop"
           )}
         >
-          Submit {reportType === "lost" ? "Lost" : "Found"} Report
+          {submitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Submitting Report...
+            </>
+          ) : (
+            `Submit ${reportType === "lost" ? "Lost" : "Found"} Report`
+          )}
         </button>
       </form>
     </div>
