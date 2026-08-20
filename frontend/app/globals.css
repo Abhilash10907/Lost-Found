@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream text-ink font-body;
+    background-image: radial-gradient(#e7ddc9 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-sunshine/70 text-ink;
+  }
+
+  :focus-visible {
+    outline: 3px solid theme("colors.ink");
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .comic-border {
+    @apply border-[2.5px] border-ink;
+  }
+
+  .comic-card {
+    @apply comic-border bg-paper rounded-2xl shadow-comic;
+  }
+
+  .btn-comic {
+    @apply inline-flex items-center justify-center gap-2 comic-border rounded-full font-display
+      font-bold uppercase tracking-wide shadow-comic-sm transition-transform duration-150
+      hover:-translate-y-0.5 hover:shadow-comic active:translate-y-0 active:shadow-none;
+  }
+
+  .sticker-badge {
+    @apply comic-border inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-comic-sm;
+  }
+
+  .halftone {
+    background-image: radial-gradient(currentColor 1.4px, transparent 1.4px);
+    background-size: 10px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
